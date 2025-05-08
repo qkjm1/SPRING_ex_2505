@@ -17,28 +17,20 @@ public class MemberService {
 	private MemberRepository memberRepository;
 
 	public MemberService(MemberRepository memberRepository) {
-		this.memberRepository = memberRepository;
-		testData();
-		
+		this.memberRepository = memberRepository;	
 	}
 	
-	public void testData() {
-		
-		for(int i = 4;i < 10;i++) {
-			doJoin("test"+i,"test"+i);
-		}
-		
-	}
-
-
-
-	public Member doJoin(String loginId, String loginPw) {
-		memberRepository.doJoin(loginId, loginPw);
-		return new Member(loginId, loginPw);
+	public Member doJoin(String loginId, String loginPw, String name) {
+		memberRepository.doJoin(loginId, loginPw, name);
+		return new Member(loginId, loginPw, name);
 	}
 	
 	public int getIntMemberId(String loginId) {
 		return memberRepository.getIntMemberId(loginId);
+	}
+	
+	public Member getMemberById(int id) {
+		return memberRepository.getMemberById(id);
 	}
 
 

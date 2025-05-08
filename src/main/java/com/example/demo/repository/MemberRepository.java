@@ -9,16 +9,18 @@ import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
 import com.example.demo.vo.Article;
+import com.example.demo.vo.Member;
 
 @Mapper
 public interface MemberRepository {
 
-	@Insert ("INSERT INTO `member` SET regDate = NOW(), updateDate = NOW(), loginId = #{loginId}, loginPw =#{loginPw}")
-	void doJoin(String loginId, String loginPw);
+	@Insert ("INSERT INTO `member` SET regDate = NOW(), loginId = #{loginId}, loginPw =#{loginPw}, `name` = #{name}")
+	void doJoin(String loginId, String loginPw, String name);
 	
-	@Select ("SELECT COUNT(*) `member` WHERE loginId = #{loginId}")
+	@Select ("SELECT COUNT(*) FROM `member` WHERE loginId = #{loginId}")
 	int getIntMemberId(String loginId);
 
-
+	@Select ("SELECT * FROM `member` WHERE loginId = #{loginId}")
+	Member getMemberById(int id);
 
 }

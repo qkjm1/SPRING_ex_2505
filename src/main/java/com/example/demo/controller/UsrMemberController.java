@@ -19,7 +19,7 @@ public class UsrMemberController {
 
 	@RequestMapping("/usr/member/doJoin")
 	@ResponseBody
-	public Object doJoin(String loginId, String loginPw) {
+	public Object doJoin(String loginId, String loginPw, String name) {
 
 		int loginIdul = (int) memberService.getIntMemberId(loginId);
 		
@@ -27,10 +27,12 @@ public class UsrMemberController {
 			return "아이디 중복";
 		}
 
-		Member member = memberService.doJoin(loginId, loginPw);
-		String sd = member.getLoginPw();
+		memberService.doJoin(loginId, loginPw, name);
 		
-		return "회원 정보:"+member+"회원 비밀번호:"+sd;
+		Member member = memberService.getMemberById(loginIdul);
+	
+		
+		return "회원 정보:"+member;
 	}
 
 
