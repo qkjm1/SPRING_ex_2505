@@ -22,13 +22,15 @@ public class UsrMemberController {
 	public Object doJoin(String loginId, String loginPw) {
 
 		int loginIdul = (int) memberService.getIntMemberId(loginId);
+		
 		if (loginIdul == 1) {
 			return "아이디 중복";
 		}
 
 		Member member = memberService.doJoin(loginId, loginPw);
-
-		return "회원 정복"+member;
+		String sd = member.getLoginPw();
+		
+		return "회원 정보:"+member+"회원 비밀번호:"+sd;
 	}
 
 
