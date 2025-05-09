@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.example.demo.service.MemberService;
 import com.example.demo.util.Ut;
 import com.example.demo.vo.Member;
+import com.example.demo.vo.ResultData;
 
 @Controller
 public class UsrMemberController {
@@ -16,61 +17,63 @@ public class UsrMemberController {
 	@Autowired
 	private MemberService memberService;
 
-	// 액션메서드
-
 	@RequestMapping("/usr/member/doJoin")
 	@ResponseBody
-	public Object doJoin(String loginId, String loginPw, String name, String nickname, String cellphoneNum,
+	public ResultData<Member> doJoin(String loginId, String loginPw, String name, String nickname, String cellphoneNum,
 			String email) {
 
 		if (Ut.isEmptyOrNull(loginId)) {
-			return "아이디를 입력해";
+			return ResultData.from("F-1", "아이디를 입력해");
 		}
 		if (Ut.isEmptyOrNull(loginPw)) {
-			return "비밀번호를 입력해";
+			return ResultData.from("F-2", "비밀번호를 입력해");
+
 		}
 		if (Ut.isEmptyOrNull(name)) {
-			return "이름을 입력해";
+			return ResultData.from("F-3", "이름을 입력해");
+
 		}
 		if (Ut.isEmptyOrNull(nickname)) {
-			return "닉네임을 입력해";
+			return ResultData.from("F-4", "닉네임을 입력해");
+
 		}
 		if (Ut.isEmptyOrNull(cellphoneNum)) {
-			return "전화번호를 입력해";
+			return ResultData.from("F-5", "전화번호를 입력해");
+
 		}
 		if (Ut.isEmptyOrNull(email)) {
-			return "이메일을 입력해";
+			return ResultData.from("F-6", "이메일을 입력해");
+
 		}
 
-		int id = memberService.doJoin(loginId, loginPw, name, nickname, cellphoneNum, email);
+		ResultData doJoinRd = memberService.doJoin(loginId, loginPw, name, nickname, cellphoneNum, email);
 
-		if (id == -1) {
-			return "이미 사용중인 loginId 입니다";
+		if (doJoinRd.isFail()) {
+			return doJoinRd;
 		}
 
-		if (id == -2) {
-			return "이미 사용중인 이름과 이메일입니다";
-		}
+		Member member = memberService.getMemberById((int) doJoinRd.getData1());
 
-		Member member = memberService.getMemberById(id);
-
-		return member;
+		return ResultData.newData(doJoinRd, member);
 	}
 	
 	@RequestMapping("/usr/member/doLogin")
 	@ResponseBody
-	public Object doLogin(String loginId, String loginPw) {
-		
-		Member member = memberService.getMemberByLoginId(loginId);
-		
-		if (member.getLoginId() == null) {
-			return "없는 아이디";
+	public ResultData<Object> doLogin(String loginId, String loginPw) {
+		if (Ut.isEmptyOrNull(loginId)) {
+			return ResultData.from("F-1", "아이디를 입력해");
 		}
-		if (member.getLoginPw() != loginPw) {
-			return "틀린 비밀번호";
+		if (Ut.isEmptyOrNull(loginPw)) {
+			return ResultData.from("F-2", "비밀번호를 입력해");
 		}
-		return member;
-	}
+		
+		ResultData doLoginRd = memberService.doLogin(loginId, loginPw);
 
+		if (doLoginRd.isFail()) {
+			return doLoginRd;
+		}
+		
+		return ResultData.from("S-1", "로그인 성공", doLoginRd.getData1());
+	}
 
 }
