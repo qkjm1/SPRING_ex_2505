@@ -14,13 +14,14 @@ import com.example.demo.vo.Member;
 @Mapper
 public interface MemberRepository {
 
-	@Insert ("INSERT INTO `member` SET regDate = NOW(), loginId = #{loginId}, loginPw =#{loginPw}, `name` = #{name}")
-	void doJoin(String loginId, String loginPw, String name);
-	
-	@Select ("SELECT COUNT(*) FROM `member` WHERE loginId = #{loginId}")
-	int getIntMemberId(String loginId);
+	public int doJoin(String loginId, String loginPw, String name, String nickname, String cellphoneNum, String email);
 
-	@Select ("SELECT * FROM `member` WHERE loginId = #{loginId}")
-	Member getMemberById(int id);
+	public Member getMemberById(int id);
+
+	public int getLastInsertId();
+
+	public Member getMemberByLoginId(String loginId);
+
+	public Member getMemberByNameAndEmail(String name, String email);
 
 }

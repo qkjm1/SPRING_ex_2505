@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.example.demo.service.MemberService;
+import com.example.demo.util.Ut;
 import com.example.demo.vo.Member;
 
 @Controller
@@ -19,20 +20,56 @@ public class UsrMemberController {
 
 	@RequestMapping("/usr/member/doJoin")
 	@ResponseBody
-	public Object doJoin(String loginId, String loginPw, String name) {
+	public Object doJoin(String loginId, String loginPw, String name, String nickname, String cellphoneNum,
+			String email) {
 
-		int loginIdul = (int) memberService.getIntMemberId(loginId);
-		
-		if (loginIdul == 1) {
-			return "아이디 중복";
+		if (Ut.isEmptyOrNull(loginId)) {
+			return "아이디를 입력해";
+		}
+		if (Ut.isEmptyOrNull(loginPw)) {
+			return "비밀번호를 입력해";
+		}
+		if (Ut.isEmptyOrNull(name)) {
+			return "이름을 입력해";
+		}
+		if (Ut.isEmptyOrNull(nickname)) {
+			return "닉네임을 입력해";
+		}
+		if (Ut.isEmptyOrNull(cellphoneNum)) {
+			return "전화번호를 입력해";
+		}
+		if (Ut.isEmptyOrNull(email)) {
+			return "이메일을 입력해";
 		}
 
-		memberService.doJoin(loginId, loginPw, name);
-		
-		Member member = memberService.getMemberById(loginIdul);
+		int id = memberService.doJoin(loginId, loginPw, name, nickname, cellphoneNum, email);
+
+		if (id == -1) {
+			return "이미 사용중인 loginId 입니다";
+		}
+
+		if (id == -2) {
+			return "이미 사용중인 이름과 이메일입니다";
+		}
+
+		Member member = memberService.getMemberById(id);
+
+		return member;
+	}
 	
+	@RequestMapping("/usr/member/doLogin")
+	@ResponseBody
+	public Object doLogin(String loginId, String loginPw) {
 		
-		return "회원 정보:"+member;
+		Member member = memberService.getMemberByLoginId(loginId);
+		
+		if (member.getLoginId() == null) {
+			return "없는 아이디";
+		}
+		if (member.getLoginPw() != loginPw) {
+			return "틀린 비밀번호";
+		}
+		return member;
 	}
 
 

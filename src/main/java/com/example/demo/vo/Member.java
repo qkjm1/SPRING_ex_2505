@@ -16,16 +16,12 @@ public class Member {
 
 	private int id;
 	private LocalDateTime regDate;
+	private LocalDateTime updateDate;
 	private String loginId;
 	private String loginPw;
 	private String name;
-	
-	public Member(String loginId, String loginPw, String name) {
-		this.loginId = loginId;
-		this.loginPw = loginPw;
-		this.name = name;
-	}
-
-
+	private String nickname;
+	private String cellphoneNum;
+	private String email;
 
 }
