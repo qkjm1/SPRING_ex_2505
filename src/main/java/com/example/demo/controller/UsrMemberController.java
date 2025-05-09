@@ -11,6 +11,8 @@ import com.example.demo.util.Ut;
 import com.example.demo.vo.Member;
 import com.example.demo.vo.ResultData;
 
+import jakarta.servlet.http.HttpSession;
+
 @Controller
 public class UsrMemberController {
 
@@ -59,7 +61,17 @@ public class UsrMemberController {
 	
 	@RequestMapping("/usr/member/doLogin")
 	@ResponseBody
-	public ResultData<Object> doLogin(String loginId, String loginPw) {
+	public ResultData<Object> doLogin(String loginId, String loginPw, HttpSession session) {
+		boolean isLogined = false;
+
+		if (session.getAttribute("loginedMemberId") != null) {
+			isLogined = true;
+		}
+		
+		if (isLogined) {
+			return ResultData.from("F-A", "이미 로그인 함");
+		}
+		
 		if (Ut.isEmptyOrNull(loginId)) {
 			return ResultData.from("F-1", "아이디를 입력해");
 		}
@@ -68,12 +80,31 @@ public class UsrMemberController {
 		}
 		
 		ResultData doLoginRd = memberService.doLogin(loginId, loginPw);
-
+		Member member = memberService.getMemberByLoginId(loginId);
+		
 		if (doLoginRd.isFail()) {
 			return doLoginRd;
 		}
 		
+		session.setAttribute("loginedMemberId", member.getId());
+		
 		return ResultData.from("S-1", "로그인 성공", doLoginRd.getData1());
+	}
+	
+	@RequestMapping("/usr/member/doLogout")
+	@ResponseBody
+	public ResultData doLogout (HttpSession session) {
+		boolean isLogined = false;
+
+		if (session.getAttribute("loginedMemberId") != null) {
+			isLogined = true;
+		}
+		
+		if (isLogined) {
+			session.removeAttribute("loginedMemberId");
+			isLogined = false;
+	}
+		return ResultData.from("F-A", "로그아웃되었습니다");
 	}
 
 }
