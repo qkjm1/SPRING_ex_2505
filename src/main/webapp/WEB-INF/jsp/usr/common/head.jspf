@@ -32,12 +32,15 @@
 					<a class="hover:underline" href="../article/list">LIST</a>
 				</li>
 				<li>
-					<c:if test="${isLogined}">
-						<a class="hover:underline" href="../member/login">LOGIN</a>
-					</c:if>
-					<c:if test="${!isLogined}">
-						<a class="hover:underline" href="../member/doLogout">LOGOUT</a>
-					</c:if>
+					<c:choose>
+						<c:when test="${!isLogined}">
+							<a class="hover:underline" href="../member/login">LOGIN</a>
+						</c:when>
+						<c:otherwise>
+							<a class="hover:underline" href="../member/doLogout">LOGOUT</a>
+						</c:otherwise>
+					</c:choose>
+
 				</li>
 			</ul>
 		</div>

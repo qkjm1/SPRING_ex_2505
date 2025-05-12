@@ -68,6 +68,8 @@ public class UsrMemberController {
 		if (member.getLoginPw().equals(loginPw) == false) {
 			return ResultData.from("F-4", "비밀번호가 일치하지 않습니다");
 		}
+		
+		
 
 		session.setAttribute("loginedMemberId", member.getId());
 
