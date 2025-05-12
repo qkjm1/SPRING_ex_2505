@@ -2,9 +2,11 @@ package com.example.demo.controller;
 
 import java.util.List;
 
+import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import com.example.demo.DemoApplication;
@@ -20,19 +22,14 @@ public class UsrArticleController {
 
 	@Autowired
 	private ArticleService articleService;
+	private usrLoginController loginController;
 
 	// 로그인 체크 -> 유무 체크 -> 권한체크
 	@RequestMapping("/usr/article/doModify")
 	@ResponseBody
 	public ResultData doModify(HttpSession session, int id, String title, String body) {
 
-		boolean isLogined = false;
-		int loginedMemberId = 0;
-
-		if (session.getAttribute("loginedMemberId") != null) {
-			isLogined = true;
-			loginedMemberId = (int) session.getAttribute("loginedMemberId");
-		}
+		int loginedMemberId = loginController.loginInt(session);
 
 		Article article = articleService.getArticleById(id);
 
@@ -54,13 +51,7 @@ public class UsrArticleController {
 	@ResponseBody
 	public ResultData doDelete(HttpSession session, int id) {
 
-		boolean isLogined = false;
-		int loginedMemberId = 0;
-
-		if (session.getAttribute("loginedMemberId") != null) {
-			isLogined = true;
-			loginedMemberId = (int) session.getAttribute("loginedMemberId");
-		}
+		int loginedMemberId = loginController.loginInt(session);
 
 		Article article = articleService.getArticleById(id);
 
@@ -77,30 +68,22 @@ public class UsrArticleController {
 		return ResultData.from("S-1", Ut.f("%d번 게시글이 삭제됨", id));
 	}
 
-	@RequestMapping("/usr/article/getArticle")
-	@ResponseBody
-	public ResultData<Article> getArticle(int id) {
+	@RequestMapping("/usr/article/detail")
+	public String getArticle(Model model, int id) {
 
 		Article article = articleService.getArticleById(id);
 
-		if (article == null) {
-			return ResultData.from("F-1", Ut.f("%d번 게시글은 없습니다", id));
-		}
+		model.addAttribute("article", article);
 
-		return ResultData.from("S-1", Ut.f("%d번 게시글입니다", id), "게시글 1row", article);
+		return "usr/article/detail";
 	}
 
 	@RequestMapping("/usr/article/doWrite")
 	@ResponseBody
 	public ResultData<Article> doWrite(HttpSession session, String title, String body) {
 
-		boolean isLogined = false;
-		int loginedMemberId = 0;
-
-		if (session.getAttribute("loginedMemberId") != null) {
-			isLogined = true;
-			loginedMemberId = (int) session.getAttribute("loginedMemberId");
-		}
+		boolean isLogined = loginController.loginBool(session);
+		int loginedMemberId = loginController.loginInt(session);
 
 		if (isLogined == false) {
 			return ResultData.from("F-A", "로그인 하고 써");
