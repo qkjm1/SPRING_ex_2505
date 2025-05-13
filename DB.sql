@@ -171,3 +171,9 @@ SET updateDate = NOW(),
     title = 'title1',
     `body` = 'body1'
 WHERE id = 5;
+
+SELECT A.*, M.nickname
+FROM article A
+INNER JOIN `member` M
+ON A.memberId = M.id
+WHERE A.id = 1
