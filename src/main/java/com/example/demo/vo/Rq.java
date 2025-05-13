@@ -2,6 +2,7 @@ package com.example.demo.vo;
 
 import java.io.IOException;
 
+
 import com.example.demo.util.Ut;
 import com.sun.net.httpserver.HttpsServer;
 
@@ -9,6 +10,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import lombok.Getter;
+
 
 public class Rq {
 
@@ -33,6 +35,8 @@ public class Rq {
 			isLogined = true;
 			loginedMemberId = (int) httpSession.getAttribute("loginedMemberId");
 		}
+		
+		
 	}
 
 	public void printHistoryBack(String msg) throws IOException {

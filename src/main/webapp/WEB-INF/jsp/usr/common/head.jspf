@@ -31,7 +31,7 @@
 				<li>
 					<a class="hover:underline" href="../article/list">LIST</a>
 				</li>
-				<c:if test="${!rq.isLogined() }">
+				<c:if test="${rq.isLogined() }">
 					<li>
 						<a class="hover:underline" href="../article/write">WRITE</a>
 					</li>

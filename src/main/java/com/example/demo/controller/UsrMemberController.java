@@ -33,7 +33,9 @@ public class UsrMemberController {
 	}
 
 	@RequestMapping("/usr/member/login")
-	public String showLogin() {
+	public String showLogin(HttpServletRequest req) {
+		Rq rq = (Rq) req.getAttribute("rq");
+		
 		return "/usr/member/login";
 	}
 
@@ -66,7 +68,8 @@ public class UsrMemberController {
 	}
 	
 	@RequestMapping("/usr/member/join")
-	public String join() {
+	public String join(HttpServletRequest req) {
+		Rq rq = (Rq) req.getAttribute("rq");
 		return "/usr/member/join";
 	}
 
@@ -107,7 +110,7 @@ public class UsrMemberController {
 
 //		Member member = memberService.getMemberById((int) doJoinRd.getData1());
 
-		return Ut.jsReplace("S-1", Ut.f("회원가입성공"), "../home/main");
+		return Ut.jsReplace("S-1", Ut.f("회원가입성공"), null);
 	}
 
 }
