@@ -19,11 +19,14 @@ import jakarta.servlet.http.HttpSession;
 public class UsrMemberController {
 
 	@Autowired
+	private Rq rq;
+
+	@Autowired
 	private MemberService memberService;
 
 	@RequestMapping("/usr/member/doLogout")
 	@ResponseBody
-	public String doLogin(HttpServletRequest req) {
+	public String doLogout(HttpServletRequest req) {
 
 		Rq rq = (Rq) req.getAttribute("rq");
 
@@ -34,7 +37,6 @@ public class UsrMemberController {
 
 	@RequestMapping("/usr/member/login")
 	public String showLogin(HttpServletRequest req) {
-		Rq rq = (Rq) req.getAttribute("rq");
 		
 		return "/usr/member/login";
 	}
@@ -66,51 +68,50 @@ public class UsrMemberController {
 
 		return Ut.jsReplace("S-1", Ut.f("%s님 환영합니다", member.getNickname()), "/");
 	}
-	
+
 	@RequestMapping("/usr/member/join")
-	public String join(HttpServletRequest req) {
-		Rq rq = (Rq) req.getAttribute("rq");
+	public String showJoin(HttpServletRequest req) {
 		return "/usr/member/join";
 	}
 
 	@RequestMapping("/usr/member/doJoin")
-	public String doJoin(HttpServletRequest req, String loginId, String loginPw, String name,
-			String nickname, String cellphoneNum, String email) {
-		Rq rq = (Rq) req.getAttribute("rq");
-		
+	@ResponseBody
+	public String doJoin(HttpServletRequest req, String loginId, String loginPw, String name, String nickname,
+			String cellphoneNum, String email) {
+
 		if (Ut.isEmptyOrNull(loginId)) {
-			return Ut.jsHistoryBack("F-1", "제대로 입력해");
+			return Ut.jsHistoryBack("F-1", "아이디를 입력해");
 		}
 		if (Ut.isEmptyOrNull(loginPw)) {
-			return Ut.jsHistoryBack("F-2", "제대로 입력해");
+			return Ut.jsHistoryBack("F-2", "비밀번호를 입력해");
 
 		}
 		if (Ut.isEmptyOrNull(name)) {
-			return Ut.jsHistoryBack("F-3", "제대로 입력해");
+			return Ut.jsHistoryBack("F-3", "이름을 입력해");
 
 		}
 		if (Ut.isEmptyOrNull(nickname)) {
-			return Ut.jsHistoryBack("F-4", "제대로 입력해");
+			return Ut.jsHistoryBack("F-4", "닉네임을 입력해");
 
 		}
 		if (Ut.isEmptyOrNull(cellphoneNum)) {
-			return Ut.jsHistoryBack("F-5", "제대로 입력해");
+			return Ut.jsHistoryBack("F-5", "전화번호를 입력해");
 
 		}
 		if (Ut.isEmptyOrNull(email)) {
-			return Ut.jsHistoryBack("F-6", "제대로 입력해");
+			return Ut.jsHistoryBack("F-6", "이메일을 입력해");
 
 		}
 
-		ResultData doJoinRd = memberService.doJoin(loginId, loginPw, name, nickname, cellphoneNum, email);
+		ResultData joinRd = memberService.join(loginId, loginPw, name, nickname, cellphoneNum, email);
 
-		if (doJoinRd.isFail()) {
-			return Ut.jsHistoryBack("F-7","회원가입 실패");
+		if (joinRd.isFail()) {
+			return Ut.jsHistoryBack(joinRd.getResultCode(), joinRd.getMsg());
 		}
 
-//		Member member = memberService.getMemberById((int) doJoinRd.getData1());
+		Member member = memberService.getMemberById((int) joinRd.getData1());
 
-		return Ut.jsReplace("S-1", Ut.f("회원가입성공"), null);
+		return Ut.jsReplace(joinRd.getResultCode(), joinRd.getMsg(), "../member/login");
 	}
 
 }

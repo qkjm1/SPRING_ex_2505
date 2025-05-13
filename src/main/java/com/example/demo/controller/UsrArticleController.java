@@ -20,36 +20,30 @@ import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class UsrArticleController {
+	
+	@Autowired
+	private Rq rq;
 
 	@Autowired
 	private ArticleService articleService;
 
 	// 로그인 체크 -> 유무 체크 -> 권한체크
-	
-	@RequestMapping("/usr/article/modify")
-	public String showModify(HttpServletRequest req, int id) {
-		Rq rq = (Rq) req.getAttribute("rq");	
-		
-		return "/usr/article/modify?id="+id;
-	}
-	
 	@RequestMapping("/usr/article/doModify")
 	@ResponseBody
-	public String doModify(HttpServletRequest req, Model model, int id, String title, String body) {
+	public ResultData doModify(HttpServletRequest req, int id, String title, String body) {
 
 		Rq rq = (Rq) req.getAttribute("rq");
-		
+
 		Article article = articleService.getArticleById(id);
 
 		if (article == null) {
-//			return ResultData.from("F-1", Ut.f("%d번 게시글은 없습니다", id), "없는 글의 id", id);
-			return Ut.jsHistoryBack("F-1", "없는 게시글입니다");
+			return ResultData.from("F-1", Ut.f("%d번 게시글은 없습니다", id), "없는 글의 id", id);
 		}
-		
+
 		ResultData userCanModifyRd = articleService.userCanModify(rq.getLoginedMemberId(), article);
 
 		if (userCanModifyRd.isFail()) {
-			return Ut.jsHistoryBack("F-2", "권한이 없는 게시글입니다");
+			return userCanModifyRd;
 		}
 
 		if (userCanModifyRd.isSuccess()) {
@@ -58,8 +52,7 @@ public class UsrArticleController {
 
 		article = articleService.getArticleById(id);
 
-		return Ut.jsReplace("S-1", "수정 성공", "/");
-//		return ResultData.from(userCanModifyRd.getResultCode(), userCanModifyRd.getMsg(), "수정된 글", article);
+		return ResultData.from(userCanModifyRd.getResultCode(), userCanModifyRd.getMsg(), "수정된 글", article);
 	}
 
 	@RequestMapping("/usr/article/doDelete")
