@@ -18,6 +18,9 @@ public class WebMvcConfigurer implements org.springframework.web.servlet.config.
 	// NeedLoginInterceptor 연결
 	@Autowired
 	NeedLoginInterceptor needLoginInterceptor;
+
+	// NeedLogoutInterceptor 연결
+	@Autowired
 	NeedLogoutInterceptor needLogoutInterceptor;
 
 	@Override
@@ -28,9 +31,9 @@ public class WebMvcConfigurer implements org.springframework.web.servlet.config.
 				.addPathPatterns("/usr/article/doWrite").addPathPatterns("/usr/article/modify")
 				.addPathPatterns("/usr/article/doModify").addPathPatterns("/usr/article/doDelete")
 				.addPathPatterns("/usr/member/doLogout");
-	
-		
+
 		registry.addInterceptor(needLogoutInterceptor).addPathPatterns("/usr/member/login")
-		.addPathPatterns("/usr/member/doLogin").addPathPatterns("/usr/member/dojoin");
+				.addPathPatterns("/usr/member/doLogin").addPathPatterns("/usr/member/join")
+				.addPathPatterns("/usr/member/doJoin");
 	}
 }
