@@ -10,6 +10,10 @@
 		<table border="1" cellspacing="0" cellpadding="5" style="width: 100%; border-collapse: collapse;">
 			<tbody>
 				<tr>
+					<th style="text-align: center;">BOARD</th>
+					<td style="text-align: center;">${article.extra__board}</td>
+				</tr>
+				<tr>
 					<th style="text-align: center;">ID</th>
 					<td style="text-align: center;">${article.id}</td>
 				</tr>

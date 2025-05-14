@@ -82,4 +82,20 @@ public class ArticleService {
 		return articleRepository.getArticles();
 	}
 
+	public List<Article> getArticlesByBdId(int boardId) {
+			return articleRepository.getArticlesByBdId(boardId);
+	}
+
+	public List<Article> getPrintArticlesByBdId(int boardId, int limitFrom, int itemsInAPage) {
+		return articleRepository.getPrintArticlesByBdId(boardId, limitFrom, itemsInAPage);
+	}
+
+	public int getBdPageCnt(int boardId) {
+		return articleRepository.getBdPageCnt(boardId);
+	}
+
+	public Article getWriter(int loginedMemberId) {
+		return articleRepository.getWriter(loginedMemberId);
+	}
+
 }

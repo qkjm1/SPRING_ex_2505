@@ -26,4 +26,12 @@ public interface ArticleRepository {
 	public List<Article> getArticles();
 	
 	public Article getForPrintArticle(int loginedMemberId);
+	
+	public List<Article> getArticlesByBdId(int boardId);
+	
+	public List<Article> getPrintArticlesByBdId(int boardId, int limitFrom, int itemsInAPage);
+
+	public int getBdPageCnt(int boardId);
+
+	public Article getWriter(int loginedMemberId);
 }
