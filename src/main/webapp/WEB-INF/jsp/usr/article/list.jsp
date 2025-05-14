@@ -8,9 +8,8 @@
 
 
 	<div class="mx-auto flex flex-col w-full h-full">
-		<table border="1" cellspacing="0" cellpadding="5" style="width: 100%; border-collapse: collapse;">
-
-			<thead>
+		<table class=""  border="1" cellspacing="0" cellpadding="5" style="width: 100%; border-collapse: collapse;">
+			<thead class="bg-indigo-300 text-white">
 				<tr>
 					<th style="text-align: center;">BOARD</th>
 					<th style="text-align: center;">ID</th>
@@ -35,18 +34,21 @@
 		</table>
 		<div class="mx-auto w-full flex flex-col">
 			<c:if test="${empty articles }">
-				<div class="flex bg-indigo-500 w-full text-center h-40 justify-center align-center">
+				<div class="flex bg-indigo-500 w-full items-center h-40 justify-center">
 					<tr>
 						<td style="text-align: center;">해당 게시글은 존재하지않습니다</td>
 					</tr>
 				</div>
 			</c:if>
+		</div>
+		<div class="mx-auto w-full flex justify-center ">
 			<c:if test="${empty articles==false}">
 				<c:forEach var="Page" begin="1" end="${totalBdPage}" step="1">
-					<a href="list?boardId=${board.id}&page=${Page}">${Page}</a>
+					<a class="mx-3" href="list?boardId=${board.id}&page=${Page}">${Page}</a>
 				</c:forEach>
 			</c:if>
 		</div>
+	</div>
 	</div>
 </section>
 <div class="mx-auto flex">

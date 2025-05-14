@@ -18,6 +18,11 @@ public class ReserchService {
 	
 	@Autowired
 	private ReserchRepository reserchRepository;
+
+	public Object articleReerch(String keyword) {
+		
+		return null;
+	}
 	
 
 }

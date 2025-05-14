@@ -5,5 +5,15 @@
 
 <mapper namespace="com.example.demo.repository.ReserchRepository">
 
+	<select id="articleReerch" parameterType="string">
+		SELECT article
+		<set>
+			<if test="title != null and title != ''">title = #{title},</if>
+			<if test="body != null and body != ''">`body` = #{body},</if>
+		</set>
+		WHERE id = #{id}
+	</select>
+
+
 
 </mapper>

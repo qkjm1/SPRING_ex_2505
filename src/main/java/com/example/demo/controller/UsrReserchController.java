@@ -17,6 +17,7 @@ import com.example.demo.service.ReserchService;
 import com.example.demo.util.Ut;
 import com.example.demo.vo.Article;
 import com.example.demo.vo.Board;
+import com.example.demo.vo.Member;
 import com.example.demo.vo.ResultData;
 import com.example.demo.vo.Rq;
 
@@ -38,6 +39,9 @@ public class UsrReserchController {
 	private ArticleService articleService;
 	
 	@Autowired
+	private MemberService memberService;
+	
+	@Autowired
 	private BoardService boardService;
 
     UsrReserchController(DemoApplication demoApplication) {
@@ -48,11 +52,14 @@ public class UsrReserchController {
     
 	
 	@RequestMapping("/usr/article/doReserch")
-	public String showModify(HttpServletRequest req, String keyword) {
+	public String doReserch(Model model, String keyword) {
 		
-		
-		
-		return null;
+		Member member = 
+		int articleId = reserchService.articleReerchId(keyword);
+
+		model.addAttribute("articleId", articleId);
+
+		return "usr/article/detail";
 	}
 	
 	

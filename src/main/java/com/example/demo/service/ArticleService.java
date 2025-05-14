@@ -98,4 +98,5 @@ public class ArticleService {
 		return articleRepository.getWriter(loginedMemberId);
 	}
 
+
 }
