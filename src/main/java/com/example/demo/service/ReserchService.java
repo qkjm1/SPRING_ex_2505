@@ -19,9 +19,8 @@ public class ReserchService {
 	@Autowired
 	private ReserchRepository reserchRepository;
 
-	public Object articleReerch(String keyword) {
-		
-		return null;
+	public List<Article> articleReerchId(String keyword) {		
+		return reserchRepository.articleReerchId(keyword);
 	}
 	
 

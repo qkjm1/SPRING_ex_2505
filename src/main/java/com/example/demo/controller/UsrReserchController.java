@@ -54,10 +54,8 @@ public class UsrReserchController {
 	@RequestMapping("/usr/article/doReserch")
 	public String doReserch(Model model, String keyword) {
 		
-		Member member = 
-		int articleId = reserchService.articleReerchId(keyword);
-
-		model.addAttribute("articleId", articleId);
+		
+		List<Article> articleId = reserchService.articleReerchId(keyword);
 
 		return "usr/article/detail";
 	}

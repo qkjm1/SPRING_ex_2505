@@ -5,13 +5,16 @@
 
 <mapper namespace="com.example.demo.repository.ReserchRepository">
 
-	<select id="articleReerch" parameterType="string">
-		SELECT article
-		<set>
-			<if test="title != null and title != ''">title = #{title},</if>
-			<if test="body != null and body != ''">`body` = #{body},</if>
-		</set>
-		WHERE id = #{id}
+	<select id="articleReerchId"
+		resultType="com.example.demo.vo.Article">
+		SELECT A.id
+		FROM article A
+		INNER JOIN board B
+		ON A.boardId = B.id
+		INNER JOIN `member` M
+		ON A.memberId = M.id
+		WHERE A.title LIKE '%#{keyword}%'
+		OR M.nickname LIKE '%#{keyword]%'
 	</select>
 
 
