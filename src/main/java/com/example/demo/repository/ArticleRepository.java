@@ -9,6 +9,7 @@ import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
 import com.example.demo.vo.Article;
+import com.example.demo.vo.ResultData;
 
 @Mapper
 public interface ArticleRepository {
@@ -24,11 +25,11 @@ public interface ArticleRepository {
 	public Article getArticleById(int id);
 
 	public List<Article> getArticles();
-	
+
 	public Article getForPrintArticle(int loginedMemberId);
-	
+
 	public List<Article> getArticlesByBdId(int boardId);
-	
+
 	public List<Article> getPrintArticlesByBdId(int boardId, int limitFrom, int itemsInAPage);
 
 	public int getBdPageCnt(int boardId);
@@ -37,6 +38,10 @@ public interface ArticleRepository {
 
 	public int getArticleCount(int boardId, String searchKeywordTypeCode, String searchKeyword);
 
-	public List<Article> getForPrintArticles(int boardId, int limitFrom, int limitTake, String searchKeywordTypeCode, String searchKeyword);
+	public List<Article> getForPrintArticles(int boardId, int limitFrom, int limitTake, String searchKeywordTypeCode,
+			String searchKeyword);
 
+	public int getArticleHitCount(int id);
+
+	public int increaseHitCount(int id);
 }
