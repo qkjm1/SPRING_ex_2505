@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.apache.tomcat.util.buf.Utf8Encoder;
@@ -13,11 +14,13 @@ import com.example.demo.DemoApplication;
 import com.example.demo.service.ArticleService;
 import com.example.demo.service.BoardService;
 import com.example.demo.service.MemberService;
+import com.example.demo.service.ReserchService;
 import com.example.demo.util.Ut;
 import com.example.demo.vo.Article;
 import com.example.demo.vo.Board;
 import com.example.demo.vo.ResultData;
 import com.example.demo.vo.Rq;
+
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -36,6 +39,9 @@ public class UsrArticleController {
 	@Autowired
 	private BoardService boardService;
 
+	@Autowired
+	private ReserchService reserchService;
+	
     UsrArticleController(DemoApplication demoApplication) {
         this.demoApplication = demoApplication;
     }
@@ -154,21 +160,39 @@ public class UsrArticleController {
 	}
 
 	@RequestMapping("/usr/article/list")
-	public String showList(Model model,  @RequestParam(defaultValue = "1")int boardId,  @RequestParam(defaultValue = "1")int page) {
-		
-		int itemsInAPage = 10;
-		int limitFrom = (page - 1) * itemsInAPage;
-		
+	public String showList(HttpServletRequest req, Model model, @RequestParam(defaultValue = "1") int boardId,
+			@RequestParam(defaultValue = "1") int page,
+			@RequestParam(defaultValue = "title") String searchKeywordTypeCode,
+			@RequestParam(defaultValue = "") String searchKeyword) throws IOException {
+
+		Rq rq = (Rq) req.getAttribute("rq");
+
 		Board board = boardService.getBoardById(boardId);
-		
-		List<Article> articles = articleService.getPrintArticlesByBdId(boardId, limitFrom,itemsInAPage);
-		int BoardCnt = articleService.getBdPageCnt(boardId);
-		int totalBdPage = (int) Math.ceil(BoardCnt / (double) itemsInAPage);
-		
-		model.addAttribute("board", board);
-		model.addAttribute("totalBdPage", totalBdPage);
-		model.addAttribute("Page", page);
+
+		if (board == null) {
+			return rq.historyBackOnView("존재하지 않는 게시판");
+		}
+
+		int articlesCount = articleService.getArticleCount(boardId, searchKeywordTypeCode, searchKeyword);
+
+		// 한 페이지에 글 10개씩
+		// 글 20 -> 2page
+		// 글 25 -> 3page
+		int itemsInAPage = 10;
+
+		int pagesCount = (int) Math.ceil(articlesCount / (double) itemsInAPage);
+
+		List<Article> articles = articleService.getForPrintArticles(boardId, itemsInAPage, page, searchKeywordTypeCode,
+				searchKeyword);
+
+		model.addAttribute("pagesCount", pagesCount);
+		model.addAttribute("articlesCount", articlesCount);
+		model.addAttribute("searchKeywordTypeCode", searchKeywordTypeCode);
+		model.addAttribute("searchKeyword", searchKeyword);
 		model.addAttribute("articles", articles);
+		model.addAttribute("boardId", boardId);
+		model.addAttribute("board", board);
+		model.addAttribute("page", page);
 
 		return "usr/article/list";
 	}

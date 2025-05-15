@@ -34,4 +34,9 @@ public interface ArticleRepository {
 	public int getBdPageCnt(int boardId);
 
 	public Article getWriter(int loginedMemberId);
+
+	public int getArticleCount(int boardId, String searchKeywordTypeCode, String searchKeyword);
+
+	public List<Article> getForPrintArticles(int boardId, int limitFrom, int limitTake, String searchKeywordTypeCode, String searchKeyword);
+
 }

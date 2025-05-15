@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class Article {
-
+	
 	private int id;
 	private String regDate;
 	private String updateDate;

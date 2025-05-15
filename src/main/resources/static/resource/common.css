@@ -24,3 +24,7 @@ li {
 header > div > ul > li {
 	margin-right: 30px;
 }
+
+section > div:first-child {
+	height: 600px;
+}

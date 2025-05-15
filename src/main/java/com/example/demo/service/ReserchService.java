@@ -11,7 +11,6 @@ import com.example.demo.repository.ReserchRepository;
 import com.example.demo.util.Ut;
 import com.example.demo.vo.Article;
 import com.example.demo.vo.Board;
-import com.example.demo.vo.ResultData;
 
 @Service
 public class ReserchService {
@@ -19,8 +18,8 @@ public class ReserchService {
 	@Autowired
 	private ReserchRepository reserchRepository;
 
-	public List<Article> articleReerchId(String keyword) {		
-		return reserchRepository.articleReerchId(keyword);
+	public List<Article> articleReserchType(String keyword, String keywordType ) {		
+		return reserchRepository.articleReerchType(keyword, keywordType);
 	}
 	
 

@@ -4,11 +4,7 @@
 <c:set var="pageTitle" value="MAIN PAGE"></c:set>
 <%@ include file="../common/head.jspf"%>
 
-<div class="flex justify-end">
-	<div class="flex">
-		<%@ include file="../common/reserch.jspf"%>
-	</div>
-</div>
+
 <div>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Vel placeat quos nobis explicabo harum enim commodi
 	quia eius eaque illum! Architecto minima ea quis suscipit aliquid officia in rem deleniti.</div>
 <div>안녕</div>

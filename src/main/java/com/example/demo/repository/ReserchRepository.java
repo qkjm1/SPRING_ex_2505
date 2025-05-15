@@ -13,7 +13,9 @@ import com.example.demo.vo.Article;
 @Mapper
 public interface ReserchRepository {
 
-	List<Article> articleReerchId(String keyword);
+	List<Article> articleReerchId(String keyword, String keywordType);
+
+	List<Article> articleReerchType(String keyword, String keywordType);
 	
 	
 }
