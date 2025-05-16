@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import com.example.demo.DemoApplication;
+import com.example.demo.interceptor.BeforeActionInterceptor;
 import com.example.demo.service.ArticleService;
 import com.example.demo.service.BoardService;
 import com.example.demo.service.MemberService;
@@ -28,27 +29,21 @@ import jakarta.servlet.http.HttpSession;
 @Controller
 public class UsrArticleController {
 
-    private final DemoApplication demoApplication;
-	
+	private final BeforeActionInterceptor beforeActionInterceptor;
+
 	@Autowired
 	private Rq rq;
 
 	@Autowired
 	private ArticleService articleService;
-	
+
 	@Autowired
 	private BoardService boardService;
 
-	@Autowired
-	private ReserchService reserchService;
-	
-    UsrArticleController(DemoApplication demoApplication) {
-        this.demoApplication = demoApplication;
-    }
+	UsrArticleController(BeforeActionInterceptor beforeActionInterceptor) {
+		this.beforeActionInterceptor = beforeActionInterceptor;
+	}
 
-	// 로그인 체크 -> 유무 체크 -> 권한체크
-    
-	
 	@RequestMapping("/usr/article/modify")
 	public String showModify(HttpServletRequest req, Model model, int id) {
 
@@ -64,7 +59,8 @@ public class UsrArticleController {
 
 		return "/usr/article/modify";
 	}
-	
+
+	// 로그인 체크 -> 유무 체크 -> 권한체크
 	@RequestMapping("/usr/article/doModify")
 	@ResponseBody
 	public String doModify(HttpServletRequest req, int id, String title, String body) {
@@ -128,7 +124,7 @@ public class UsrArticleController {
 
 		return "usr/article/detail";
 	}
-	
+
 	@RequestMapping("/usr/article/doIncreaseHitCountRd")
 	@ResponseBody
 	public ResultData doIncreaseHitCount(int id) {
@@ -143,33 +139,36 @@ public class UsrArticleController {
 	}
 
 	@RequestMapping("/usr/article/write")
-	public String showWrite(HttpServletRequest req, Model model) {
-		Rq rq = (Rq) req.getAttribute("rq");
-		Article article = articleService.getWriter(rq.getLoginedMemberId());
-		
-		model.addAttribute("article", article);
-		
-		return "/usr/article/write";
+	public String showWrite(HttpServletRequest req) {
+
+		return "usr/article/write";
 	}
-	
+
 	@RequestMapping("/usr/article/doWrite")
 	@ResponseBody
-	public String doWrite(HttpServletRequest req, String title, String body) {
+	public String doWrite(HttpServletRequest req, String title, String body, String boardId) {
 
 		Rq rq = (Rq) req.getAttribute("rq");
 
 		if (Ut.isEmptyOrNull(title)) {
-			return Ut.jsHistoryBack("F-1", "내용을 입력하세요");
+			return Ut.jsHistoryBack("F-1", "제목을 입력하세요");
 		}
 
 		if (Ut.isEmptyOrNull(body)) {
-			return Ut.jsHistoryBack("F-1", "내용을 입력하세요");
+			return Ut.jsHistoryBack("F-2", "내용을 입력하세요");
 		}
 
-		ResultData doWriteRd = articleService.writeArticle(rq.getLoginedMemberId(), title, body);
+		if (Ut.isEmptyOrNull(boardId)) {
+			return Ut.jsHistoryBack("F-3", "게시판을 선택하세요");
+		}
 
-	
-		return Ut.jsReplace(doWriteRd.getData1Name(),doWriteRd.getMsg(),"../article/list");
+		ResultData doWriteRd = articleService.writeArticle(rq.getLoginedMemberId(), title, body, boardId);
+
+		int id = (int) doWriteRd.getData1();
+
+		Article article = articleService.getArticleById(id);
+
+		return Ut.jsReplace(doWriteRd.getResultCode(), doWriteRd.getMsg(), "../article/detail?id=" + id);
 	}
 
 	@RequestMapping("/usr/article/list")

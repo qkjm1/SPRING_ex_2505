@@ -10,5 +10,24 @@ $('select[data-value]').each(function(index, el) {
 
 
 
+const params = {};
+params.memberId = parseInt('${param.memberId }');
+params.articleId = parseInt('${param.articleId }');
 
+function ArticleDetail__doIncreaseHeartCount() {
+	$.get('../article/doIncHeartCountRd', {
+		id: params.id,
+		ajaxMode: 'Y'
+	}, function(data) {
+		console.log(data);
+		console.log(data.data1);
+		console.log(data.msg);
+		$('.article-detail__article').html(data.data1);
+	}, 'json');
+}
 
+$(function() {
+		ArticleDetail__doIncreaseHeartCount();
+		// 		setTimeout(ArticleDetail__doIncreaseHitCount, 2000);
+	})
+	

@@ -21,10 +21,16 @@ public class Article {
 	private int boardId;
 	private String title;
 	private String body;
-	private String hitCount;
-	
+	private int hitCount;
+
 	private String extra__writer;
 	private String extra__board;
+	
+	private String extra__goodReactionPoint;
+	private String extra__badReactionPoint;
+	private String extra__sumReactionPoint;
+	
+	
 	private boolean userCanModify;
 	private boolean userCanDelete;
-}
+} 

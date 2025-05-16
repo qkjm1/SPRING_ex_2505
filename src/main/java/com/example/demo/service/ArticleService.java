@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import com.example.demo.repository.ArticleRepository;
 import com.example.demo.util.Ut;
 import com.example.demo.vo.Article;
-import com.example.demo.vo.Likes;
 import com.example.demo.vo.ResultData;
 
 @Service
@@ -16,16 +15,13 @@ public class ArticleService {
 
 	@Autowired
 	private ArticleRepository articleRepository;
-	@Autowired
-	private Likes like;
-	
-	
+
 	public ArticleService(ArticleRepository articleRepository) {
 		this.articleRepository = articleRepository;
 	}
 
-	public ResultData writeArticle(int memberId, String title, String body) {
-		articleRepository.writeArticle(memberId, title, body);
+	public ResultData writeArticle(int memberId, String title, String body, String boardId) {
+		articleRepository.writeArticle(memberId, title, body, boardId);
 
 		int id = articleRepository.getLastInsertId();
 
@@ -73,7 +69,7 @@ public class ArticleService {
 
 		ResultData userCanModifyRd = userCanModify(loginedMemberId, article);
 		article.setUserCanModify(userCanModifyRd.isSuccess());
-		
+
 		ResultData userDeleteRd = userCanDelete(loginedMemberId, article);
 		article.setUserCanDelete(userDeleteRd.isSuccess());
 	}
@@ -86,26 +82,6 @@ public class ArticleService {
 		return articleRepository.getArticles();
 	}
 
-	public List<Article> getArticlesByBdId(int boardId) {
-			return articleRepository.getArticlesByBdId(boardId);
-	}
-
-	public List<Article> getPrintArticlesByBdId(int boardId, int limitFrom, int itemsInAPage) {
-		return articleRepository.getPrintArticlesByBdId(boardId, limitFrom, itemsInAPage);
-	}
-
-	public int getBdPageCnt(int boardId) {
-		return articleRepository.getBdPageCnt(boardId);
-	}
-
-	public Article getWriter(int loginedMemberId) {
-		return articleRepository.getWriter(loginedMemberId);
-	}
-
-	public int getArticleCount(int boardId, String searchKeywordTypeCode, String searchKeyword) {
-		return articleRepository.getArticleCount(boardId,searchKeywordTypeCode,searchKeyword);
-	}
-	
 	public List<Article> getForPrintArticles(int boardId, int itemsInAPage, int page, String searchKeywordTypeCode,
 			String searchKeyword) {
 		// SELECT * FROM article WHERE boardId = 1 ORDER BY id DESC LIMIT 0, 10;
@@ -120,8 +96,8 @@ public class ArticleService {
 				searchKeyword);
 	}
 
-	public Object getArticleHitCount(int id) {
-		return articleRepository.getArticleHitCount(id);
+	public int getArticleCount(int boardId, String searchKeywordTypeCode, String searchKeyword) {
+		return articleRepository.getArticleCount(boardId, searchKeywordTypeCode, searchKeyword);
 	}
 
 	public ResultData increaseHitCount(int id) {
@@ -133,15 +109,9 @@ public class ArticleService {
 
 		return ResultData.from("S-1", "조회수 증가", "id", id);
 	}
-	
-	
-	public Likes likeCnt (int articleId, int memberId) {
-		return null;
+
+	public Object getArticleHitCount(int id) {
+		return articleRepository.getArticleHitCount(id);
 	}
-	
-	
-
-	
-
 
 }

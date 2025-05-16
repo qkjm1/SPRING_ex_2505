@@ -25,13 +25,15 @@
 	$(function() {
 		ArticleDetail__doIncreaseHitCount();
 		// 		setTimeout(ArticleDetail__doIncreaseHitCount, 2000);
-
 	})
+	
+	
 </script>
 <section class="mt-8 text-xl px-4">
 	<div class="mx-auto">
 		<table border="1" cellspacing="0" cellpadding="5" style="width: 100%; border-collapse: collapse;">
 			<tbody>
+				
 				<tr>
 					<th style="text-align: center;">BOARD</th>
 					<td style="text-align: center;">${article.extra__board}</td>
@@ -39,6 +41,18 @@
 				<tr>
 					<th style="text-align: center;">ID</th>
 					<td style="text-align: center;">${article.id}</td>
+				</tr>
+				<tr>
+					<th style="text-align: center;">LIKE</th>
+					<td style="text-align: center;">${article.extra__goodReactionPoint }</td>
+				</tr>
+				<tr>
+					<th style="text-align: center;">DISLIKE</th>
+					<td style="text-align: center;">${article.extra__badReactionPoint }</td>
+				</tr>
+				<tr>
+					<th style="text-align: center;">SUM</th>
+					<td style="text-align: center;">${article.extra__sumReactionPoint }</td>
 				</tr>
 				<tr>
 					<th style="text-align: center;">VIEWS</th>
@@ -50,7 +64,7 @@
 					<th style="text-align: center;">Registration Date</th>
 					<td style="text-align: center;">${article.regDate}</td>
 				</tr>
-				<tr>
+				<tr class="hidden">
 					<th style="text-align: center;">Update Date</th>
 					<td style="text-align: center;">${article.updateDate}</td>
 				</tr>
