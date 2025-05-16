@@ -24,7 +24,7 @@
 
 	$(function() {
 		ArticleDetail__doIncreaseHitCount();
-// 		setTimeout(ArticleDetail__doIncreaseHitCount, 2000);
+		// 		setTimeout(ArticleDetail__doIncreaseHitCount, 2000);
 
 	})
 </script>
@@ -39,6 +39,12 @@
 				<tr>
 					<th style="text-align: center;">ID</th>
 					<td style="text-align: center;">${article.id}</td>
+				</tr>
+				<tr>
+					<th style="text-align: center;">VIEWS</th>
+					<td style="text-align: center;">
+						<span class="article-detail__hit-count">${article.hitCount }</span>
+					</td>
 				</tr>
 				<tr>
 					<th style="text-align: center;">Registration Date</th>

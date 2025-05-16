@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.example.demo.repository.ArticleRepository;
 import com.example.demo.util.Ut;
 import com.example.demo.vo.Article;
+import com.example.demo.vo.Likes;
 import com.example.demo.vo.ResultData;
 
 @Service
@@ -15,7 +16,10 @@ public class ArticleService {
 
 	@Autowired
 	private ArticleRepository articleRepository;
-
+	@Autowired
+	private Likes like;
+	
+	
 	public ArticleService(ArticleRepository articleRepository) {
 		this.articleRepository = articleRepository;
 	}
@@ -128,6 +132,11 @@ public class ArticleService {
 		}
 
 		return ResultData.from("S-1", "조회수 증가", "id", id);
+	}
+	
+	
+	public Likes likeCnt (int articleId, int memberId) {
+		return null;
 	}
 	
 	
