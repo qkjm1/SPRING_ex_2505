@@ -21,10 +21,42 @@
 			$('.article-detail__hit-count').html(data.data1);
 		}, 'json');
 	}
-
+	
 	$(function() {
 		ArticleDetail__doIncreaseHitCount();
 		// 		setTimeout(ArticleDetail__doIncreaseHitCount, 2000);
+	})
+	
+	function aa() {
+		$.get('/usr/reactionPoint/doGoodReaction', {
+			id : params.id,
+			ajaxMode : 'Y'
+		}, function(data) {
+			console.log(data);
+			console.log(data.data1);
+			console.log(data.msg);
+			$('.article-detail__like-count').html(data.data1);
+		}, 'json');
+	}
+
+	$('.article-detail__like-count').click(function() {
+		aa();
+	})
+	
+	function bb() {
+		$.get('/usr/reactionPoint/doBadReaction', {
+			id : params.id,
+			ajaxMode : 'Y'
+		}, function(data) {
+			console.log(data);
+			console.log(data.data1);
+			console.log(data.msg);
+			$('.article-detail__dislike-count').html(data.data1);
+		}, 'json');
+	}
+
+	$('.article-detail__dislike-count').click(function() {
+		bb();
 	})
 	
 	
@@ -57,8 +89,8 @@
 					<th style="text-align: center;">LIKE / DISLIKE</th>
 					<td style="text-align: center;">
 						<a href="/usr/reactionPoint/doGoodReaction?relTypeCode=article&relId=${param.id }&replaceUri=${rq.currentUri}"
-							class="btn btn-outline btn-success">👍 LIKE ${article.goodReactionPoint }</a>
-						<a href="/usr/reactionPoint/doBadReaction?relTypeCode=article&relId=${param.id }&replaceUri=${rq.currentUri}" class="btn btn-outline btn-error">👎 DISLIKE
+							class="btn btn-outline btn-success article-detail__like-count">👍 LIKE ${article.goodReactionPoint }</a>
+						<a href="/usr/reactionPoint/doBadReaction?relTypeCode=article&relId=${param.id }&replaceUri=${rq.currentUri}" class="btn btn-outline btn-error article-detail__dislike-count">👎 DISLIKE
 							${article.badReactionPoint }</a>
 					</td>
 				</tr>

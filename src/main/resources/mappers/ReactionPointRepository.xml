@@ -17,7 +17,7 @@
 		relId = #{relId},
 		`point` = 1;
 	</insert>
-	
+
 	<insert id="addBadReactionPoint">
 		INSERT INTO reactionPoint
 		SET
@@ -40,20 +40,6 @@
 		RP.memberId = #{memberId};
 	</select>
 
-	<update id="upDateReaction">
-		UPDATE reactionPoint AS RP
-		INNER JOIN (
-		SELECT *
-		FROM article AS A
-		) AS A
-		ON A.id = RP.relId
-		SET RP.`point` = #{usersReaction}*-1
-		WHERE RP.relId = #{relId}
-		AND RP.relTypeCode =
-		#{relTypeCode}
-		AND RP.memberId = #{loginedMemberId}
-	</update>
-	
 	<delete id="deleteReactionPoint">
 		DELETE FROM reactionPoint
 		WHERE memberId = #{memberId}
@@ -61,6 +47,13 @@
 		AND relId = #{relId}
 	</delete>
 
-
-
+	<select id="getSumGoodReactionPoint">
+		SELECT SUM(`point`)
+		FROM reactionPoint
+		WHERE relTypeCode = #{relTypeCode}
+		AND relId = #{relId}
+		AND `point` = 1
+	</select>
+	
+	
 </mapper>
