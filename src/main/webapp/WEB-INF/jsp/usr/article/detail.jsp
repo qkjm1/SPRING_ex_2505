@@ -29,48 +29,45 @@
 	
 	
 </script>
-<section class="mt-8 text-xl px-4">
+<section class="mt-24 text-xl px-4">
 	<div class="mx-auto">
-		<table border="1" cellspacing="0" cellpadding="5" style="width: 100%; border-collapse: collapse;">
+		<table class="table" border="1" cellspacing="0" cellpadding="5" style="width: 100%; border-collapse: collapse;">
 			<tbody>
-				
-				<tr>
-					<th style="text-align: center;">BOARD</th>
-					<td style="text-align: center;">${article.extra__board}</td>
-				</tr>
 				<tr>
 					<th style="text-align: center;">ID</th>
 					<td style="text-align: center;">${article.id}</td>
 				</tr>
 				<tr>
-					<th style="text-align: center;">LIKE</th>
-					<td style="text-align: center;">${article.extra__goodReactionPoint }</td>
-				</tr>
-				<tr>
-					<th style="text-align: center;">DISLIKE</th>
-					<td style="text-align: center;">${article.extra__badReactionPoint }</td>
-				</tr>
-				<tr>
-					<th style="text-align: center;">SUM</th>
-					<td style="text-align: center;">${article.extra__sumReactionPoint }</td>
-				</tr>
-				<tr>
-					<th style="text-align: center;">VIEWS</th>
-					<td style="text-align: center;">
-						<span class="article-detail__hit-count">${article.hitCount }</span>
-					</td>
-				</tr>
-				<tr>
 					<th style="text-align: center;">Registration Date</th>
 					<td style="text-align: center;">${article.regDate}</td>
 				</tr>
-				<tr class="hidden">
+				<tr>
 					<th style="text-align: center;">Update Date</th>
 					<td style="text-align: center;">${article.updateDate}</td>
 				</tr>
 				<tr>
 					<th style="text-align: center;">Writer</th>
 					<td style="text-align: center;">${article.extra__writer }</td>
+				</tr>
+				<tr>
+					<th style="text-align: center;">BoardId</th>
+					<td style="text-align: center;">${article.boardId }</td>
+				</tr>
+				<tr>
+					<th style="text-align: center;">LIKE / DISLIKE</th>
+					<td style="text-align: center;">
+						<a href="/usr/reactionPoint/doGoodReaction?relTypeCode=article&relId=${param.id }&replaceUri=${rq.currentUri}"
+							class="btn btn-outline btn-success">👍 LIKE ${article.goodReactionPoint }</a>
+						<a href="/usr/reactionPoint/doBadReaction" class="btn btn-outline btn-error">👎 DISLIKE
+							${article.badReactionPoint }</a>
+					</td>
+				</tr>
+
+				<tr>
+					<th style="text-align: center;">VIEWS</th>
+					<td style="text-align: center;">
+						<span class="article-detail__hit-count">${article.hitCount }</span>
+					</td>
 				</tr>
 				<tr>
 					<th style="text-align: center;">Title</th>
@@ -83,14 +80,15 @@
 			</tbody>
 		</table>
 		<div class="btns">
-			<button type="button" onclick="history.back();">뒤로가기</button>
+			<button class="btn btn-ghost" type="button" onclick="history.back();">뒤로가기</button>
 			<c:if test="${article.userCanModify }">
-				<a href="../article/modify?id=${article.id}">수정</a>
+				<a class="btn btn-ghost" href="../article/modify?id=${article.id}">수정</a>
 			</c:if>
 			<c:if test="${article.userCanDelete }">
-				<a href="../article/doDelete?id=${article.id}">삭제</a>
+				<a class="btn btn-ghost" href="../article/doDelete?id=${article.id}">삭제</a>
 			</c:if>
 		</div>
+
 	</div>
 </section>
 
