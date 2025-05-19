@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.repository.ReactionPointRepository;
+import com.example.demo.util.Ut;
 import com.example.demo.vo.ResultData;
 
 @Service
@@ -15,15 +16,23 @@ public class ReactionPointService {
 		this.reactionPointRepository = reactionPointRepository;
 	}
 
-	public int userCanReaction(int loginedMemberId, String relTypeCode, int relId) {
-
-		// 로그인 안했어
+	public ResultData usersReaction(int loginedMemberId, String relTypeCode, int relId) {
 		if (loginedMemberId == 0) {
-			return -2;
+			return ResultData.from("F-1", "로그인이 필요합니다");
 		}
+		
+		
+		int sumReactionPointByMemberId = reactionPointRepository.getSumReactionPoint(loginedMemberId, relTypeCode,
+				relId);
+		
+		if(sumReactionPointByMemberId != 0) {
+			return ResultData.from("F-1","이미 추천함","sumReactionPointByMemberId",sumReactionPointByMemberId);
+		}
+	
+		return ResultData.from("S-1", "추천가능", "sumReactionPointByMemberId", sumReactionPointByMemberId);
 
-		return reactionPointRepository.getSumReactionPoint(loginedMemberId, relTypeCode, relId);
 	}
+
 
 	public ResultData increaseReactionPoint(int loginedMemberId, String relTypeCode, int relId) {
 
@@ -35,5 +44,14 @@ public class ReactionPointService {
 
 		return ResultData.from("S-1", "좋아요!");
 	}
+
+	public ResultData upDateReaction(int loginedMemberId, String relTypeCode, int relId, int usersReaction) {
+		
+		ResultData affectedDelRow = reactionPointRepository.upDateReaction(loginedMemberId, relTypeCode, relId, usersReaction);
+
+	
+		return ResultData.from("S-2", "싫어요!");
+	}
+
 
 }

@@ -30,9 +30,56 @@ public class UsrReactionPointController {
 	UsrReactionPointController(UsrArticleController usrArticleController) {
 		this.usrArticleController = usrArticleController;
 	}
+	
+	
+	
 
 	@RequestMapping("/usr/reactionPoint/doGoodReaction")
-	public String doGoodReaction(HttpServletRequest req, String relTypeCode, int relId, String replaceUri) {
+	public Object doGoodReaction(HttpServletRequest req, String relTypeCode, int relId, String replaceUri) {
+
+	ResultData usersReactionRd = reactionPointService.usersReaction(rq.getLoginedMemberId(), relTypeCode, relId);
+		
+		int usersReaction = (int)usersReactionRd.getData1();
+	
+		if (usersReaction == 1) {
+			ResultData rd = reactionPointService.deleteGoodReactionPoint(rq.getLoginedMemberId(), relTypeCode, relId);
+			
+		}
+		if (usersReaction == -1) {
+			ResultData resultData =  reactionPointService.upDateReaction(rq.getLoginedMemberId(), relTypeCode, relId, usersReaction);
+			return Ut.f("s-1", "싫어요 변환");
+		}
+
+		ResultData reactionRd = reactionPointService.increaseReactionPoint(rq.getLoginedMemberId(), relTypeCode, relId);
+
+		return Ut.jsReplace(reactionRd.getResultCode(), reactionRd.getMsg(), replaceUri);
+	}
+	
+	
+	
+	
+	@RequestMapping("/usr/reactionPoint/doBadReaction")
+	public String doBadReaction(HttpServletRequest req, String relTypeCode, int relId, String replaceUri) {
+
+		int usersReaction = reactionPointService.userCanReaction(rq.getLoginedMemberId(), relTypeCode, relId);
+
+		if (usersReaction == -1) {
+			return Ut.f("F-1", "이미 함");
+		}
+		
+		if (usersReaction == 1) {	
+			ResultData resultData =  reactionPointService.upDateReaction(rq.getLoginedMemberId(), relTypeCode, relId, usersReaction);		
+			return Ut.f("S-1", "좋아요 > 싫어요 혹은 싫어요");
+		}
+		
+		return Ut.f("S-1","좋아요 > 싫어요 ", replaceUri);
+	}
+	
+	
+	
+	
+	
+	public String reactionJoinUp(HttpServletRequest req, String relTypeCode, int relId, String replaceUri) {
 
 		int usersReaction = reactionPointService.userCanReaction(rq.getLoginedMemberId(), relTypeCode, relId);
 
