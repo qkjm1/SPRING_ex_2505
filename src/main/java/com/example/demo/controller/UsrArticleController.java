@@ -16,10 +16,11 @@ import com.example.demo.service.ArticleService;
 import com.example.demo.service.BoardService;
 import com.example.demo.service.MemberService;
 import com.example.demo.service.ReactionPointService;
-import com.example.demo.service.ReserchService;
+import com.example.demo.service.RpleyService;
 import com.example.demo.util.Ut;
 import com.example.demo.vo.Article;
 import com.example.demo.vo.Board;
+import com.example.demo.vo.Reply;
 import com.example.demo.vo.ResultData;
 import com.example.demo.vo.Rq;
 
@@ -43,6 +44,9 @@ public class UsrArticleController {
 
 	@Autowired
 	private ReactionPointService reactionPointService;
+	
+	@Autowired
+	private RpleyService rpleyService;
 
 	UsrArticleController(BeforeActionInterceptor beforeActionInterceptor) {
 		this.beforeActionInterceptor = beforeActionInterceptor;
@@ -128,7 +132,11 @@ public class UsrArticleController {
 		if (usersReactionRd.isSuccess()) {
 			model.addAttribute("userCanMakeReaction", usersReactionRd.isSuccess());
 		}
+		
+		List<Reply> replys = rpleyService.listReply(id);
+		
 
+		model.addAttribute("replys", replys);
 		model.addAttribute("article", article);
 		model.addAttribute("isAlreadyAddGoodRp",
 				reactionPointService.isAlreadyAddGoodRp(rq.getLoginedMemberId(), id, "article"));

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.demo.repository.RepleyRepository">
+
+	<insert id="addReply" parameterType="map">
+		INSERT INTO `reply`
+		SET
+		regDate = NOW(),
+		updateDate = NOW(),
+		memberId = #{memberId},
+		articleId =
+		#{articleId},
+		reMsg = #{reMsg};
+	</insert>
+
+	<select id="listReply" resultType="com.example.demo.vo.Reply">
+		SELECT *
+		FROM `reply`
+		WHERE
+		articleId = #{articleId};
+	</select>
+</mapper>

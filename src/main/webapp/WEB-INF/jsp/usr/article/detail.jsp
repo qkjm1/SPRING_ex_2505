@@ -7,59 +7,16 @@
 <script>
 	const params = {};
 	params.id = parseInt('${param.id }');
+	
+	var isAlreadyAddGoodRp = ${ isAlreadyAddGoodRp };
+	var isAlreadyAddBadRp = ${ isAlreadyAddBadRp };
+	
 </script>
 
-<script>
-	function ArticleDetail__doIncreaseHitCount() {
-		$.get('../article/doIncreaseHitCountRd', {
-			id : params.id,
-			ajaxMode : 'Y'
-		}, function(data) {
-			console.log(data);
-			console.log(data.data1);
-			console.log(data.msg);
-			$('.article-detail__hit-count').html(data.data1);
-		}, 'json');
-	}
-	
-	$(function() {
-		ArticleDetail__doIncreaseHitCount();
-		// 		setTimeout(ArticleDetail__doIncreaseHitCount, 2000);
-	})
-	
-	function aa() {
-		$.get('/usr/reactionPoint/doGoodReaction', {
-			id : params.id,
-			ajaxMode : 'Y'
-		}, function(data) {
-			console.log(data);
-			console.log(data.data1);
-			console.log(data.msg);
-			$('.article-detail__like-count').html(data.data1);
-		}, 'json');
-	}
 
-	$('.article-detail__like-count').click(function() {
-		aa();
-	})
-	
-	function bb() {
-		$.get('/usr/reactionPoint/doBadReaction', {
-			id : params.id,
-			ajaxMode : 'Y'
-		}, function(data) {
-			console.log(data);
-			console.log(data.data1);
-			console.log(data.msg);
-			$('.article-detail__dislike-count').html(data.data1);
-		}, 'json');
-	}
 
-	$('.article-detail__dislike-count').click(function() {
-		bb();
-	})
-	
-	
+
+
 </script>
 <section class="mt-24 text-xl px-4">
 	<div class="mx-auto">
@@ -88,10 +45,14 @@
 				<tr>
 					<th style="text-align: center;">LIKE / DISLIKE</th>
 					<td style="text-align: center;">
-						<a href="/usr/reactionPoint/doGoodReaction?relTypeCode=article&relId=${param.id }&replaceUri=${rq.currentUri}"
-							class="btn btn-outline btn-success article-detail__like-count">👍 LIKE ${article.goodReactionPoint }</a>
-						<a href="/usr/reactionPoint/doBadReaction?relTypeCode=article&relId=${param.id }&replaceUri=${rq.currentUri}" class="btn btn-outline btn-error article-detail__dislike-count">👎 DISLIKE
-							${article.badReactionPoint }</a>
+						<button id="likeButton" class="btn btn-outline btn-success" onclick="doGoodReaction(${param.id})">
+							👍 LIKE
+							<span class="likeCount">${article.goodReactionPoint}</span>
+						</button>
+						<button id="DislikeButton" class="btn btn-outline btn-error" onclick="doBadReaction(${param.id})">
+							👎 DISLIKE
+							<span class="DislikeCount">${article.badReactionPoint}</span>
+						</button>
 					</td>
 				</tr>
 
@@ -111,6 +72,36 @@
 				</tr>
 			</tbody>
 		</table>
+	
+			<table class="table" border="1" cellspacing="0" cellpadding="5" style="width: 100%; border-collapse: collapse;">
+
+			<thead>
+				<tr>
+					<th style="text-align: center;">ID</th>
+					<th style="text-align: center;">Registration Date</th>
+					<th style="text-align: center;">MEMBERID</th>
+					<th style="text-align: center;">MSG</th>
+				</tr>
+			</thead>
+			<tbody>
+				<c:forEach var="reply" items="${replys}">
+					<tr class="hover:bg-base-300">
+						<td style="text-align: center;">${reply.id}</td>
+						<td style="text-align: center;">${reply.regDate.substring(0,10)}</td>
+						<td style="text-align: center;">${reply.memberId}</td>
+						<td style="text-align: center;">${reply.reMsg}</td>
+
+					</tr>
+				</c:forEach>
+
+				<c:if test="${empty replys }">
+					<tr>
+						<td colspan="4" style="text-align: center;">댓글이 없습니다</td>
+					</tr>
+				</c:if>
+			</tbody>
+		</table>
+
 		<div class="btns">
 			<button class="btn btn-ghost" type="button" onclick="history.back();">뒤로가기</button>
 			<c:if test="${article.userCanModify }">
@@ -119,8 +110,14 @@
 			<c:if test="${article.userCanDelete }">
 				<a class="btn btn-ghost" href="../article/doDelete?id=${article.id}">삭제</a>
 			</c:if>
+			<div>
+				<form action="../rpley/doReplyAction" method="POST">
+					<input name="msg" autocomplete="off" type="text" placeholder="댓글입력" />
+					<input name="id" type="hidden" value="${article.id}" />
+					<input class="btn btn-outline btn-success" type="submit" />
+				</form>
+			</div>
 		</div>
-
 	</div>
 </section>
 

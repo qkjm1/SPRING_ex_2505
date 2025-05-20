@@ -18,7 +18,7 @@ public class Reply {
 	private String regDate;
 	private String updateDate;
 	private int articleId;
-	private String nickName;
-	private String body;
+	private int memberId;
+	private String reMsg;
 	
 }

@@ -9,13 +9,15 @@ import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
 import com.example.demo.vo.Article;
+import com.example.demo.vo.Reply;
+import com.example.demo.vo.ResultData;
 
 @Mapper
-public interface ReserchRepository {
+public interface RepleyRepository {
 
-	List<Article> articleReerchId(String keyword, String keywordType);
+	public int addReply(int memberId, int articleId, String reMsg);
 
-	List<Article> articleReerchType(String keyword, String keywordType);
-	
-	
+	public List<Reply> listReply(int articleId);
+
+
 }
