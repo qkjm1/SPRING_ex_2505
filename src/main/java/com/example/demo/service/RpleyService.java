@@ -11,7 +11,7 @@ import com.example.demo.repository.RepleyRepository;
 import com.example.demo.util.Ut;
 import com.example.demo.vo.Article;
 import com.example.demo.vo.Board;
-import com.example.demo.vo.Reply;
+import com.example.demo.vo.ChatMsg;
 import com.example.demo.vo.ResultData;
 
 @Service
@@ -29,7 +29,7 @@ public class RpleyService {
 		return ResultData.from("S-1", "댓글 추가");
 	}
 
-	public List<Reply> listReply(int id) {
+	public List<ChatMsg> listReply(int id) {
 		return rpleyRepository.listReply(id);
 	}
 	

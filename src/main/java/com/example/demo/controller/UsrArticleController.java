@@ -20,7 +20,7 @@ import com.example.demo.service.RpleyService;
 import com.example.demo.util.Ut;
 import com.example.demo.vo.Article;
 import com.example.demo.vo.Board;
-import com.example.demo.vo.Reply;
+import com.example.demo.vo.ChatMsg;
 import com.example.demo.vo.ResultData;
 import com.example.demo.vo.Rq;
 
@@ -133,7 +133,7 @@ public class UsrArticleController {
 			model.addAttribute("userCanMakeReaction", usersReactionRd.isSuccess());
 		}
 		
-		List<Reply> replys = rpleyService.listReply(id);
+		List<ChatMsg> replys = rpleyService.listReply(id);
 		
 
 		model.addAttribute("replys", replys);

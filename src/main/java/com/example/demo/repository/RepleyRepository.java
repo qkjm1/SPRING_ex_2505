@@ -9,7 +9,7 @@ import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
 import com.example.demo.vo.Article;
-import com.example.demo.vo.Reply;
+import com.example.demo.vo.ChatMsg;
 import com.example.demo.vo.ResultData;
 
 @Mapper
@@ -17,7 +17,7 @@ public interface RepleyRepository {
 
 	public int addReply(int memberId, int articleId, String reMsg);
 
-	public List<Reply> listReply(int articleId);
+	public List<ChatMsg> listReply(int articleId);
 
 
 }
